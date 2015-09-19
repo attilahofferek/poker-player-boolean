@@ -12,4 +12,8 @@ class Player
     public function showdown($game_state)
     {
     }
+
+    public function myCards($gameState) {
+      return $gameState["players"][$gameState["in_anction"]]["hole_cards"];
+    }
 }
