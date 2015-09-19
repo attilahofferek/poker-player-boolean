@@ -37,22 +37,22 @@ class Player {
 			return 10000000;
 		}
 
-		//if ($moneyNeedsToCall <= $bigBlind) {
-		//	return $moneyNeedsToCall;
-		//}
+		if ($moneyNeedsToCall <= $bigBlind) {
+			return $moneyNeedsToCall;
+		}
 
 		return 0;
 	}
 
 	public function betRequest2($game_state) {
     if (count($game_state["community_cards"]) < 3) {
-      return $this->preFlop();
+      return $this->preFlop($game_state);
     } else {
-      return $this->postFlop();
+      return $this->postFlop($game_state);
     }
   }
 
-  public function preFlop() {
+  public function preFlop($game_state) {
 		$myCards = $this->myCards($game_state);
 		$smallBlind = $game_state['small_blind'];
 		$bigBlind = $smallBlind * 2;
@@ -70,7 +70,7 @@ class Player {
 		return 0;
 	}
 
-  public function postFlop() {
+  public function postFlop($game_state) {
     // TODO: implement
     return 0;
   }
