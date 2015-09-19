@@ -163,7 +163,12 @@ class Player {
 		$rankJson = file_get_contents(self::RAINMAN_URL . "?cards=" . $urlCards);
 		$rank = json_decode($rankJson, true);
 
-		return $rank['rank'];
+		if (in_array($myCards[0], $rank["cards_used"]) or
+				in_array($myCards[1], $rank["cards_used"]))
+		{
+			return $rank['rank'];
+		}
+		return 0;
 	}
 
 	public function getPotOdds($game_state, $neededToCall) {
