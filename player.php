@@ -71,6 +71,48 @@ class Player {
 				}));
 	}
 
+
+	public function getHandClass($cards) {
+		$cCards = array_map(function($card){
+			return $this->convertCard($card['rank']);
+		}, $cards);
+
+		if ($cCards[0] == $cCards[1]) { // magas párok
+			if ($cCards[0] >= 10)
+				return 5;
+		}
+
+		if ($cCards[0] >= 12 && $cCards[1] >= 12) { // magas lapok
+			return 4;
+		}
+
+		if ($cCards[0] == $cCards[1]) { // alacsony párok
+			if ($cCards[0] < 10)
+				return 3;
+		}
+
+		if ($cards[0]['suit'] == $cards[1]['suit'] && abs($cCards[0] - $cCards[1]) == 1) { // sorhoz
+			return 2;
+		}
+
+		return 1;
+	}
+
+	public function convertCard($rank) {
+		switch ($rank) {
+			case "A":
+				return 14;
+			case "K":
+				return 13;
+			case "Q":
+				return 12;
+			case "J":
+				return 11;
+			default:
+				return $rank;
+		}
+	} 
+
 	public function getRainmanRank($gameState) {
 		$myCards = $this->myCards($gameState);
 		$cards = json_encode(array_merge($myCards, $gameState['community_cards']));
@@ -80,5 +122,4 @@ class Player {
 
 		return $rank['rank'];
 	}
-
 }
