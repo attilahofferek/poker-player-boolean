@@ -8,7 +8,7 @@ class Player
     {
 		$myCards = $this->myCards($game_state);
 		if (
-				$myCards[0]['rank'] == $myCards[0]['rank'] or
+				$myCards[0]['rank'] == $myCards[1]['rank'] or
 				in_array($myCards[0]['rank'], array('10', 'J', 'Q', 'K', 'A')) or
 				in_array($myCards[1]['rank'], array('10', 'J', 'Q', 'K', 'A'))
 		) {
