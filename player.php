@@ -71,7 +71,8 @@ class Player {
 				}));
 	}
 
-	public function getRainmanRank($myCards, $gameState) {
+	public function getRainmanRank($gameState) {
+		$myCards = $this->myCards($gameState);
 		$cards = json_encode(array_merge($myCards, $gameState['community_cards']));
 		$urlCards = urlencode($cards);
 		$rankJson = file_get_contents(self::RAINMAN_URL . "?cards=" . $urlCards);
