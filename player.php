@@ -6,6 +6,8 @@ class Player {
 	const RAINMAN_URL = 'http://rainman.leanpoker.org/rank';
 
 	public function betRequest($game_state) {
+		return 0;
+
 		if ($game_state["dealer"] == $game_state["in_action"]) { // devill blöff :)
 			$smallBlind = $game_state['small_blind'];
 			$bigBlind = $smallBlind * 2;
