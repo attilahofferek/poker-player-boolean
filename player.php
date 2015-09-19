@@ -6,7 +6,7 @@ class Player {
 	const RAINMAN_URL = 'http://rainman.leanpoker.org/rank';
 
 	public function betRequest($game_state) {
-		$myCards = $this->myCards($game_state);
+		/*$myCards = $this->myCards($game_state);
 		$smallBlind = $game_state['small_blind'];
 		$bigBlind = $smallBlind * 2;
 		$playersCount = $this->countActivePlayers($game_state);
@@ -19,6 +19,21 @@ class Player {
 				)
 				and $playersCount <= 3
 		) {
+			return 10000000;
+		}
+
+		if ($moneyNeedsToCall <= $bigBlind) {
+			return $moneyNeedsToCall;
+		}
+
+		return 0;*/
+		$myCards = $this->myCards($game_state);
+		$smallBlind = $game_state['small_blind'];
+		$bigBlind = $smallBlind * 2;
+		$playersCount = $this->countActivePlayers($game_state);
+		$moneyNeedsToCall = $game_state['current_buy_in'] - $game_state["players"][$game_state["in_action"]]['bet'];
+
+		if ($this->getHandClass($myCards) >= 3 && $playersCount <= 3) {
 			return 10000000;
 		}
 
