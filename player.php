@@ -6,6 +6,8 @@ class Player {
 	const RAINMAN_URL = 'http://rainman.leanpoker.org/rank';
 
 	public function betRequest($game_state) {
+		return 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 		if (count($game_state["community_cards"]) < 3) {
       return $this->preFlop($game_state);
     } else {
