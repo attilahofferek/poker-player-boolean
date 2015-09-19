@@ -45,6 +45,14 @@ class Player {
 	}
 
 	public function betRequest2($game_state) {
+    if (count($game_state["community_cards"]) < 3) {
+      return $this->preFlop();
+    } else {
+      return $this->postFlop();
+    }
+  }
+
+  public function preFlop() {
 		$myCards = $this->myCards($game_state);
 		$smallBlind = $game_state['small_blind'];
 		$bigBlind = $smallBlind * 2;
@@ -61,6 +69,14 @@ class Player {
 
 		return 0;
 	}
+
+  public function postFlop() {
+    // TODO: implement
+    return 0;
+  }
+
+
+
 
 	public function showdown($game_state) {
 
