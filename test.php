@@ -70,10 +70,24 @@ $data = '{
     ]
 }';
 
-$gameState = json_decode($data, true);
 $player = new Player();
-echo $player->betRequest($gameState). "\n";
-var_dump($player->myCards($gameState));
+var_dump($player->betRequest(makeGame(makePair("10"))));
+var_dump($player->betRequest(makeGame(makePair("K"))));
+var_dump($player->betRequest(makeGame(makeCards("2", "4"))));
+var_dump($player->betRequest(makeGame(makeCards("2", "10"))));
+var_dump($player->betRequest(makeGame(makeCards("10", "2"))));
+var_dump($player->betRequest(makeGame(makeCards("10", "2"))));
 
+function makeCards($value1, $value2) {
+  return [["suit" => "hearts", "rank" => $value1], ["suit" => "clubs", "rank" => $value2]];
+}
+
+function makePair($value) {
+  return [["suit" => "hearts", "rank" => $value], ["suit" => "clubs", "rank" => $value]];
+}
+
+function makeGame($cards) {
+  return ["in_action" => 0, "players" => [["hole_cards" => $cards]]];
+}
 
 ?>
