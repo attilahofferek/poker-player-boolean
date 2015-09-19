@@ -72,8 +72,10 @@ class Player {
 
   public function postFlop($game_state) {
     $rank = $this->getRainmanRank($game_state);
-	
-	
+		if ($rank >= 3) {
+			return 10000000;
+		}
+
     return 0;
   }
 
