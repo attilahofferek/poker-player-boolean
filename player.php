@@ -21,10 +21,10 @@ class Player
 		if ($moneyNeedsToCall <= $bigBlind) {
 			return $moneyNeedsToCall;
 		}
-		
+
 		return 0;
     }
-	
+
 	public function betRequest2($game_state)
     {
 		$myCards = $this->myCards($game_state);
@@ -47,7 +47,7 @@ class Player
 		if ($moneyNeedsToCall <= $bigBlind) {
 			return $moneyNeedsToCall;
 		}
-		
+
 		return 0;
     }
 
@@ -56,15 +56,15 @@ class Player
     }
 
     public function myCards($gameState) {
-		
-		
+
+
 		return $gameState["players"][$gameState["in_action"]]["hole_cards"];
     }
-	
+
 	public function countActivePlayers($game_state)
 	{
-		array_filter($game_state['players'], function($item) {
+		return count(array_filter($game_state['players'], function($item) {
 			return $item['status'] === 'active';
-		});
+		}));
 	}
 }
