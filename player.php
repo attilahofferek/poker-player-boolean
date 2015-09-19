@@ -63,7 +63,7 @@ class Player
 	
 	public function countActivePlayers($game_state)
 	{
-		array_filter($game_state, function($item) {
+		array_filter($game_state['players'], function($item) {
 			return $item['status'] === 'active';
 		});
 	}
