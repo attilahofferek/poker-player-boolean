@@ -128,7 +128,7 @@ class Player {
 				return 3;
 		}
 
-		if ($cards[0]['suit'] == $cards[1]['suit'] && abs($cCards[0] - $cCards[1]) == 1) { // sorhoz
+		if ($cards[0]['suits'] == $cards[1]['suits'] && abs($cCards[0] - $cCards[1]) == 1) { // sorhoz
 			return 2;
 		}
 
