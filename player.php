@@ -37,7 +37,7 @@ class Player {
 			return 10000000;
 		}
 
-		if ($moneyNeedsToCall <= $bigBlind) {
+		if (false && $moneyNeedsToCall <= $bigBlind) {
 			return $moneyNeedsToCall;
 		}
 
@@ -71,7 +71,9 @@ class Player {
 	}
 
   public function postFlop($game_state) {
-    // TODO: implement
+    $rank = $this->getRainmanRank($game_state);
+	
+	
     return 0;
   }
 
