@@ -66,7 +66,7 @@ class Player {
 		$playersCount = $this->countActivePlayers($game_state);
 		$moneyNeedsToCall = $game_state['current_buy_in'] - $game_state["players"][$game_state["in_action"]]['bet'];
 
-		if ($this->getHandClass($myCards) >= 4 && $playersCount <= 3) {
+		if ($this->getHandClass($myCards) >= 3 && $playersCount <= 3) {
 			return 10000000;
 		}
 
