@@ -2,7 +2,7 @@
 
 class Player {
 
-	const VERSION = "Default PHP folding player 17:29";
+	const VERSION = "Default PHP folding player 17:33";
 	const RAINMAN_URL = 'http://rainman.leanpoker.org/rank';
 
 	public function betRequest($game_state) {
@@ -93,7 +93,7 @@ class Player {
 				return 5;
 		}
 
-		if ($cCards[0] >= 12 && $cCards[1] >= 12) { // magas lapok
+		if ($cCards[0] >= 10 && $cCards[1] >= 10) { // magas lapok
 			return 4;
 		}
 
