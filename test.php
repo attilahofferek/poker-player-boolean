@@ -39,6 +39,12 @@ class PlayerTest extends PHPUnit_Framework_TestCase
     $this->assertBet(0, $this->b->b(100)->a(5)->m([H => 10, S => 10]));
   }
 
+  public function testPostFlop()
+  {
+    $this->assertBet(0, $this->b->c([H => 4, S => 3, D => 2, S => 5])->m([H => 10, S => 2]));
+    $this->assertBet(10000000, $this->b->c([D => 4, S => 3, H => 2, S => 5])->m([D => 2, S => 2]));
+  }
+
   private function assertBet($bet, $gameState) {
     $player = new Player();
     $this->assertEquals($bet, $player->betRequest2($gameState));
