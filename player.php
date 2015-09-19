@@ -2,10 +2,20 @@
 
 class Player {
 
-	const VERSION = "Default PHP folding player 16:51";
+	const VERSION = "Default PHP folding player 17:04";
 	const RAINMAN_URL = 'http://rainman.leanpoker.org/rank';
 
 	public function betRequest($game_state) {
+		if ($game_state["dealer"] == $game_state["in_action"]) { // devill blöff :)
+			$smallBlind = $game_state['small_blind'];
+			$bigBlind = $smallBlind * 2;
+			$current_buy_in = $game_state['current_buy_in'];
+			$moneyNeedsToCall = $current_buy_in - $game_state["players"][$game_state["in_action"]]['bet'];
+			if ($current_buy_in == $bigBlind) {
+				return $moneyNeedsToCall + 4 * $bigBlind;
+			}
+		}
+
 		if (count($game_state["community_cards"]) < 3) {
       return $this->preFlop($game_state);
     } else {
