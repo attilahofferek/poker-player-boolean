@@ -2,12 +2,10 @@
 
 class Player {
 
-	const VERSION = "Default PHP folding player";
+	const VERSION = "Default PHP folding player 16:51";
 	const RAINMAN_URL = 'http://rainman.leanpoker.org/rank';
 
 	public function betRequest($game_state) {
-		return 0; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 		if (count($game_state["community_cards"]) < 3) {
       return $this->preFlop($game_state);
     } else {
@@ -36,7 +34,7 @@ class Player {
 
 		$isClassTwo = ($this->getHandClass($myCards) === 2);
 
-		if ($isClassTwo && $this->getPotOdds($game_state, $moneyNeedsToCall) < (1 / 4)) {
+		if ($isClassTwo && $this->getPotOdds($game_state, $moneyNeedsToCall) < (1 / 3)) {
 			return $moneyNeedsToCall;
 		}
 
