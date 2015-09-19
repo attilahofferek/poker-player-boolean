@@ -50,7 +50,7 @@ class Player {
 		if ($rank < 1) {
 			return 0;
 		}
-    return $moneyNeedsToCall + max($game_state["minimum_raise"], $rank * 100);
+    return $moneyNeedsToCall + max($game_state["minimum_raise"], $rank * 200);
   }
 
 
