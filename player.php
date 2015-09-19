@@ -102,7 +102,12 @@ class Player {
 				return 3;
 		}
 
-		if ($cards[0]['suit'] == $cards[1]['suit'] && abs($cCards[0] - $cCards[1]) == 1) { // sorhoz
+		$isSuited = $cards[0]['suit'] == $cards[1]['suit'];
+		$gap = abs($cCards[0] - $cCards[1]);
+		$isConnected = $gap == 1;
+		$hasOneGap = $gap == 2;
+
+		if ($isConnected || ($isSuited && $hasOneGap)) { // sorhoz
 			return 2;
 		}
 
