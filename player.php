@@ -13,12 +13,11 @@ class Player {
 		$moneyNeedsToCall = $game_state['current_buy_in'] - $game_state["players"][$game_state["in_action"]]['bet'];
 		if (
 				(
-				$myCards[0]['rank'] == $myCards[1]['rank'] or
-				in_array($myCards[0]['rank'], array('10', 'J', 'Q', 'K', 'A')) or
-				in_array($myCards[1]['rank'], array('10', 'J', 'Q', 'K', 'A'))
-				) and (
-				$playersCount <= 3
+					$myCards[0]['rank'] == $myCards[1]['rank'] or
+					(in_array($myCards[0]['rank'], array('10', 'J', 'Q', 'K', 'A')) and
+					in_array($myCards[1]['rank'], array('10', 'J', 'Q', 'K', 'A')))
 				)
+				and $playersCount <= 3
 		) {
 			return 10000000;
 		}
@@ -36,6 +35,7 @@ class Player {
 		$bigBlind = $smallBlind * 2;
 		$playersCount = $this->countActivePlayers($game_state);
 		$moneyNeedsToCall = $game_state['current_buy_in'] - $game_state["players"][$game_state["in_action"]]['bet'];
+
 		if ($this->getHandClass($myCards) >= 4 && $playersCount <= 3) {
 			return 10000000;
 		}
