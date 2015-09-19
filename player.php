@@ -130,10 +130,10 @@ class Player {
 
 		if (1 == $rank['rank']) { // pair
 			$highest = max(array_map(function($card){
-				return $card['rank'];
+				return $this->convertCard($card['rank']);
 			}, $communityCards));
 
-			if ($rank["value"] != $highest) { // we are not having the
+			if ($this->convertCard($rank["value"]) != $highest) { // we are not having the
 				return 0;
 			}
 		}
