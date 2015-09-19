@@ -56,7 +56,7 @@ class Player {
 	}
 
 	public function showdown($game_state) {
-		
+
 	}
 
 	public function myCards($gameState) {
@@ -111,14 +111,14 @@ class Player {
 			default:
 				return $rank;
 		}
-	} 
+	}
 
 	public function getRainmanRank($gameState) {
 		$myCards = $this->myCards($gameState);
 		$cards = json_encode(array_merge($myCards, $gameState['community_cards']));
 		$urlCards = urlencode($cards);
 		$rankJson = file_get_contents(self::RAINMAN_URL . "?cards=" . $urlCards);
-		$rank = json_decode($rankJson);
+		$rank = json_decode($rankJson, true);
 
 		return $rank['rank'];
 	}
