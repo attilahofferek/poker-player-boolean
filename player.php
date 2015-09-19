@@ -66,11 +66,17 @@ class Player {
 		$playersCount = $this->countActivePlayers($game_state);
 		$moneyNeedsToCall = $game_state['current_buy_in'] - $game_state["players"][$game_state["in_action"]]['bet'];
 
-		if ($this->getHandClass($myCards) >= 3 && $playersCount <= 3) {
+		if ($this->getHandClass($myCards) >= 4 && $playersCount <= 3) {
 			return 10000000;
 		}
 
 		if ($moneyNeedsToCall <= $bigBlind) {
+			return $moneyNeedsToCall;
+		}
+
+		$isClassTwo = ($this->getHandClass($myCards) === 2);
+
+		if ($isClassTwo && $this->getPotOdds($game_state, $moneyNeedsToCall) < (1 / 4)) {
 			return $moneyNeedsToCall;
 		}
 
@@ -158,5 +164,9 @@ class Player {
 		$rank = json_decode($rankJson, true);
 
 		return $rank['rank'];
+	}
+
+	public function getPotOdds($game_state, $neededToCall) {
+		return $neededToCall / $game_state['pot'];
 	}
 }
