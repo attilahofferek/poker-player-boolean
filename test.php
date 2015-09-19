@@ -15,21 +15,6 @@ class PlayerTest extends PHPUnit_Framework_TestCase
     $this->b = new GameStateBuilder();
   }
 
-/*
-var_dump($player->betRequest2(makeGame(makePair("10"))));
-var_dump($player->betRequest2(makeGame(makePair("K"))));
-var_dump($player->betRequest2(makeGame(makeCards("2", "4"))));
-var_dump($player->betRequest2(makeGame(makeCards("2", "10"))));
-var_dump($player->betRequest2(makeGame(makeCards("10", "2"))));
-var_dump($player->betRequest2(makeGame(makeCards("2", "4"), 100, 90)));
-var_dump($player->betRequest2(makeGame(makeCards("2", "4"), 100, 80)));
-var_dump($player->betRequest2(makeGame(makeCards("2", "4"), 100, 60)));
-var_dump($player->betRequest2(makeGame(makeCards("2", "4"), 100, 60)));
-var_dump($player->betRequest2(makeGame(makeCards("2", "10"), 100, 10, 2)));
-var_dump($player->betRequest2(makeGame(makeCards("2", "10"), 100, 10, 3)));
-var_dump($player->betRequest2(makeGame(makeCards("2", "10"), 100, 10, 4)));
-*/
-
   public function testKeepPairs()
   {
     $this->assertBet(10000000, $this->b->m([H => "K", S => "K"]));
@@ -42,6 +27,16 @@ var_dump($player->betRequest2(makeGame(makeCards("2", "10"), 100, 10, 4)));
     $this->assertBet(0, $this->b->m([H => 3, S => 4]));
     $this->assertBet(0, $this->b->m([H => 3, S => "K"]));
     $this->assertBet(0, $this->b->m([H => 10, S => 2]));
+  }
+
+  public function testAllinOnlyUnderFourPlayers()
+  {
+    $this->assertBet(10000000, $this->b->a(2)->m([H => 10, S => 10]));
+    $this->assertBet(10000000, $this->b->a(3)->m([H => 10, S => 10]));
+    $this->assertBet(0, $this->b->a(4)->m([H => 10, S => 10]));
+    $this->assertBet(0, $this->b->a(5)->m([H => 10, S => 10]));
+    $this->assertBet(20, $this->b->b(20)->a(4)->m([H => 10, S => 10]));
+    $this->assertBet(0, $this->b->b(100)->a(5)->m([H => 10, S => 10]));
   }
 
   private function assertBet($bet, $gameState) {
@@ -85,6 +80,11 @@ class GameStateBuilder {
 
   public function c($cards) {
     $this->gameState["community_cards"] = $this->makeCards($cards);
+    return $this;
+  }
+
+  public function b($buyIn) {
+    $this->gameState["current_buy_in"] = $buyIn;
     return $this;
   }
 
