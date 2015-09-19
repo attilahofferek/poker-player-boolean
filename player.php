@@ -110,7 +110,7 @@ class Player {
 			case "J":
 				return 11;
 			default:
-				return $rank;
+				return (int) $rank;
 		}
 	}
 
