@@ -2,75 +2,20 @@
 
 require "player.php";
 
-$data = '{
-    "tournament_id":"550d1d68cd7bd10003000003",
+define("H", "hearts");
+define("S", "spades");
+define("C", "clubs");
+define("D", "diamonds");
 
-    "game_id":"550da1cb2d909006e90004b1",
-    "round":0,
-    "bet_index":0,
-    "small_blind": 10,
-    "current_buy_in": 320,
-    "pot": 400,
-    "minimum_raise": 240,
-    "dealer": 1,
-    "orbits": 7,
-    "in_action": 1,
-    "players": [
-        {
+class PlayerTest extends PHPUnit_Framework_TestCase
+{
+  private $b;
 
-            "id": 0,
+  public function __construct() {
+    $this->b = new GameStateBuilder();
+  }
 
-            "name": "Albert",
-
-            "status": "active",
-            "version": "Default random player",
-            "stack": 1010,
-            "bet": 320
-        },
-        {
-            "id": 1,
-            "name": "Bob",
-            "status": "active",
-            "version": "Default random player",
-            "stack": 1590,
-            "bet": 80,
-            "hole_cards": [
-                {
-                    "rank": "6",
-                    "suit": "hearts"
-                },
-                {
-                    "rank": "K",
-                    "suit": "spades"
-                }
-            ]
-        },
-        {
-            "id": 2,
-            "name": "Chuck",
-            "status": "out",
-            "version": "Default random player",
-            "stack": 0,
-            "bet": 0
-        }
-    ],
-    "community_cards": [
-        {
-            "rank": "4",
-            "suit": "spades"
-        },
-        {
-            "rank": "A",
-            "suit": "hearts"
-        },
-        {
-            "rank": "6",
-            "suit": "clubs"
-        }
-    ]
-}';
-
-$player = new Player();
+/*
 var_dump($player->betRequest2(makeGame(makePair("10"))));
 var_dump($player->betRequest2(makeGame(makePair("K"))));
 var_dump($player->betRequest2(makeGame(makeCards("2", "4"))));
@@ -83,22 +28,80 @@ var_dump($player->betRequest2(makeGame(makeCards("2", "4"), 100, 60)));
 var_dump($player->betRequest2(makeGame(makeCards("2", "10"), 100, 10, 2)));
 var_dump($player->betRequest2(makeGame(makeCards("2", "10"), 100, 10, 3)));
 var_dump($player->betRequest2(makeGame(makeCards("2", "10"), 100, 10, 4)));
+*/
 
-function makeCards($value1, $value2) {
-  return [["suit" => "hearts", "rank" => $value1], ["suit" => "clubs", "rank" => $value2]];
-}
-
-function makePair($value) {
-  return [["suit" => "hearts", "rank" => $value], ["suit" => "clubs", "rank" => $value]];
-}
-
-function makeGame($cards, $buyin = 100, $bet = 100, $playerNum = 3) {
-  $players = [["hole_cards" => $cards, "bet" => $bet, "status" => "active"]];
-  for($i = 0; $i < 4; ++$i) {
-    $status = $i < $playerNum - 1? "active" : "out";
-    array_push($players, ["hole_cards" => [], "bet" => 100, "status" => $status]);
+  public function testKeepPairs()
+  {
+    $this->assertBet(10000000, $this->b->m([H => "K", S => "K"]));
+    $this->assertBet(10000000, $this->b->m([H => 10, S => 10]));
+    $this->assertBet(10000000, $this->b->m([H => 2, S => 2]));
   }
-  return ["in_action" => 0, "players" => $players, "small_blind" => 10, "current_buy_in" => $buyin];
+
+  public function testFoldLow()
+  {
+    $this->assertBet(0, $this->b->m([H => 3, S => 4]));
+    $this->assertBet(0, $this->b->m([H => 3, S => "K"]));
+    $this->assertBet(0, $this->b->m([H => 10, S => 2]));
+  }
+
+  private function assertBet($bet, $gameState) {
+    $player = new Player();
+    $this->assertEquals($bet, $player->betRequest2($gameState));
+  }
+}
+
+/*
+$b = new GameStateBuilder();
+$s = $b->c([C => "J", S => "J", D => "K"])->a(3)->m([H => "K", S => "K"]);
+var_dump($s);
+var_dump($player->getRainmanRank($s));
+*/
+class GameStateBuilder {
+  private $DEFAULT_GAME = [
+    "in_action" => 0,
+    "players" => [[
+      "hole_cards" => [],
+      "bet" => 0,
+      "status" => "active"
+    ], ["status" => "out"], ["status" => "out"], ["status" => "out"], ["status" => "out"]],
+    "small_blind" => 10,
+    "current_buy_in" => 0,
+    "community_cards" => []
+  ];
+  private $gameState;
+
+  public function __construct() {
+    $this->gameState = $this->DEFAULT_GAME;
+  }
+
+  public function a($playerNum) {
+    $i = 0;
+    foreach ($this->gameState["players"] as &$player) {
+      $player["status"] = $i < $playerNum ? "active" : "out";
+      ++$i;
+    }
+    return $this;
+  }
+
+  public function c($cards) {
+    $this->gameState["community_cards"] = $this->makeCards($cards);
+    return $this;
+  }
+
+  private function makeCards($cards) {
+    $newCards = [];
+    foreach ($cards as $suit => $rank) {
+      array_push($newCards, ["suit" => $suit, "rank" => $rank]);
+    }
+    return $newCards;
+  }
+
+  public function m($cards) {
+    $this->gameState["players"][$this->gameState["in_action"]]["hole_cards"] = $this->makeCards($cards);
+    $tmp = $this->gameState;
+    $this->gameState = $this->DEFAULT_GAME;
+    return $tmp;
+  }
 }
 
 ?>
