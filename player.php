@@ -134,7 +134,7 @@ class Player {
 				return 3;
 		}
 
-		if ($cards[0]['suits'] == $cards[1]['suits'] && abs($cCards[0] - $cCards[1]) == 1) { // sorhoz
+		if ($cards[0]['suit'] == $cards[1]['suit'] && abs($cCards[0] - $cCards[1]) == 1) { // sorhoz
 			return 2;
 		}
 
@@ -158,17 +158,29 @@ class Player {
 
 	public function getRainmanRank($gameState) {
 		$myCards = $this->myCards($gameState);
-		$cards = json_encode(array_merge($myCards, $gameState['community_cards']));
+		$communityCards = $gameState['community_cards'];
+		$cards = json_encode(array_merge($myCards, $communityCards));
 		$urlCards = urlencode($cards);
 		$rankJson = file_get_contents(self::RAINMAN_URL . "?cards=" . $urlCards);
 		$rank = json_decode($rankJson, true);
 
-		if (in_array($myCards[0], $rank["cards_used"]) or
-				in_array($myCards[1], $rank["cards_used"]))
+		if (!in_array($myCards[0], $rank["cards_used"]) and
+				!in_array($myCards[1], $rank["cards_used"]))
 		{
-			return $rank['rank'];
+			return 0;
 		}
-		return 0;
+
+		if (1 == $rank['rank']) { // pair
+			$highest = max(array_map(function($card){
+				return $card['rank'];
+			}, $communityCards));
+
+			if ($rank["value"] != $highest) { // we are not having the
+				return 0;
+			}
+		}
+
+		return $rank['rank'];
 	}
 
 	public function getPotOdds($game_state, $neededToCall) {

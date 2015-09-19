@@ -15,6 +15,15 @@ class PlayerTest extends PHPUnit_Framework_TestCase
     $this->b = new GameStateBuilder();
   }
 
+  public function testHandClass() {
+    $player = new Player();
+    $this->assertEquals(5, $player->getHandClass([["suit"=>"hearts","rank"=>10],["suit"=>"spades","rank"=>10]]));
+    $this->assertEquals(4, $player->getHandClass([["suit"=>"hearts","rank"=>"K"],["suit"=>"spades","rank"=>"Q"]]));
+    $this->assertEquals(3, $player->getHandClass([["suit"=>"hearts","rank"=>9],["suit"=>"spades","rank"=>9]]));
+    $this->assertEquals(2, $player->getHandClass([["suit"=>"spades","rank"=>4],["suit"=>"spades","rank"=>5]]));
+    $this->assertEquals(1, $player->getHandClass([["suit"=>"hearts","rank"=>10],["suit"=>"spades","rank"=>2]]));
+  }
+
   public function testKeepPairs()
   {
     $this->assertBet(10000000, $this->b->m([H => "K", S => "K"]));
@@ -43,6 +52,12 @@ class PlayerTest extends PHPUnit_Framework_TestCase
   {
     $this->assertBet(0, $this->b->c([H => 4, S => 3, D => 10, S => 5])->m([H => 8, S => 2]));
     $this->assertBet(10000000, $this->b->c([D => 4, S => 3, H => 2, S => 5])->m([D => 2, S => 2]));
+  }
+
+  public function testRainMan() {
+    $player = new Player();
+    $this->assertEquals(0, $player->getRainmanRank($this->b->c([H => 3, S => 3, D => 10])->m([H => 8, S => 2])));
+    $this->assertEquals(0, $player->getRainmanRank($this->b->c([H => 3, S => 4, D => 10])->m([H => 8, S => 8])));
   }
 
   private function assertBet($bet, $gameState) {
