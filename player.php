@@ -2,7 +2,7 @@
 
 class Player {
 
-	const VERSION = "Default PHP folding player 17:04";
+	const VERSION = "Default PHP folding player 17:29";
 	const RAINMAN_URL = 'http://rainman.leanpoker.org/rank';
 
 	public function betRequest($game_state) {
