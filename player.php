@@ -37,9 +37,9 @@ class Player {
 			return 10000000;
 		}
 
-		if ($moneyNeedsToCall <= $bigBlind) {
-			return $moneyNeedsToCall;
-		}
+		//if ($moneyNeedsToCall <= $bigBlind) {
+		//	return $moneyNeedsToCall;
+		//}
 
 		return 0;
 	}
