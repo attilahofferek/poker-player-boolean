@@ -27,6 +27,8 @@ class Player {
 		}
 
 		return 0;*/
+
+		/*
 		$myCards = $this->myCards($game_state);
 		$smallBlind = $game_state['small_blind'];
 		$bigBlind = $smallBlind * 2;
@@ -41,7 +43,12 @@ class Player {
 			return $moneyNeedsToCall;
 		}
 
-		return 0;
+		return 0;*/
+		if (count($game_state["community_cards"]) < 3) {
+      return $this->preFlop($game_state);
+    } else {
+      return $this->postFlop($game_state);
+    }
 	}
 
 	public function betRequest2($game_state) {
@@ -75,8 +82,11 @@ class Player {
 		if ($rank >= 3) {
 			return 10000000;
 		}
-
-    return 0;
+		$moneyNeedsToCall = $game_state['current_buy_in'] - $game_state["players"][$game_state["in_action"]]['bet'];
+		if ($rank < 1) {
+			return 0;
+		}
+    return $moneyNeedsToCall + max($game_state["minimum_raise"], $rank * 100);
   }
 
 

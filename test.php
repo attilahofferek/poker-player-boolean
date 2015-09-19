@@ -41,7 +41,7 @@ class PlayerTest extends PHPUnit_Framework_TestCase
 
   public function testPostFlop()
   {
-    $this->assertBet(0, $this->b->c([H => 4, S => 3, D => 2, S => 5])->m([H => 10, S => 2]));
+    $this->assertBet(0, $this->b->c([H => 4, S => 3, D => 10, S => 5])->m([H => 8, S => 2]));
     $this->assertBet(10000000, $this->b->c([D => 4, S => 3, H => 2, S => 5])->m([D => 2, S => 2]));
   }
 
@@ -67,7 +67,8 @@ class GameStateBuilder {
     ], ["status" => "out"], ["status" => "out"], ["status" => "out"], ["status" => "out"]],
     "small_blind" => 10,
     "current_buy_in" => 0,
-    "community_cards" => []
+    "community_cards" => [],
+    "minimum_raise" => 120
   ];
   private $gameState;
 
